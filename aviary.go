@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	//program always receives the folder it's contained in as the first argument?
 	if len(os.Args) == 1 {
 		welcome()
 
@@ -30,6 +31,7 @@ func main() {
 				fmt.Println(err.Error())
 			}
 		}
+		panic("[fail] command loop escaped")
 	}
 
 	err := command.Parse(os.Args[1:])
@@ -40,5 +42,6 @@ func main() {
 }
 
 func welcome() {
-	fmt.Println("welcome to aviary")
+	fmt.Println("welcome to aviary... name pending update")
+
 }

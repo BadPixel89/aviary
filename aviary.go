@@ -2,17 +2,23 @@ package main
 
 import (
 	"aviary/command"
+	"aviary/configmanager"
 	"bufio"
 	"fmt"
 	"os"
 	"strings"
 )
 
+var conf configmanager.Config
+
 func main() {
 	//program always receives the folder it's contained in as the first argument?
 	if len(os.Args) == 1 {
 		fmt.Println(os.Args)
 		welcome()
+		conf = configmanager.LoadConfig(os.Args[0])
+		fmt.Println(os.Args[0])
+		fmt.Println(conf.JamfUrl)
 
 		scanner := bufio.NewScanner(os.Stdin)
 		for scanner.Scan() {

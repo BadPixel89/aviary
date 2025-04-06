@@ -11,6 +11,7 @@ import (
 func main() {
 	//program always receives the folder it's contained in as the first argument?
 	if len(os.Args) == 1 {
+		fmt.Println(os.Args)
 		welcome()
 
 		scanner := bufio.NewScanner(os.Stdin)

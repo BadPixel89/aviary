@@ -1,13 +1,9 @@
-package configmanager
+package config
 
-type Config struct {
-	JamfUrl string
-}
-
-func LoadConfig(path string) Config {
+func LoadConfig(path string) (Config, error) {
 	return Config{
 		JamfUrl: "www.google.com",
-	}
+	}, nil
 }
 
 // this needs to create a dummy file with empty fields if no conf is present

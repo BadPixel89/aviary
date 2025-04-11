@@ -1,9 +1,13 @@
 package config
 
 func LoadConfig(path string) (Config, error) {
+	return DefaultConf(), nil
+}
+
+func DefaultConf() Config {
 	return Config{
 		JamfUrl: "www.google.com",
-	}, nil
+	}
 }
 
 // this needs to create a dummy file with empty fields if no conf is present

@@ -14,7 +14,7 @@ func main() {
 	if len(os.Args) == 1 {
 		welcome()
 
-		conf, err := config.LoadConfig(os.Args[0])
+		conf, err := config.LoadMasterConfig(os.Args[0])
 		if err != nil {
 			fmt.Println("error loading config\n" + err.Error())
 		}

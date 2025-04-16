@@ -1,13 +1,11 @@
 package config
 
-func LoadConfig(path string) (Config, error) {
+func LoadMasterConfig(path string) (MasterConfig, error) {
 	return DefaultConf(), nil
 }
 
-func DefaultConf() Config {
-	return Config{
-		JamfUrl: "www.google.com",
-	}
+func DefaultConf() MasterConfig {
+	return MasterConfig{}
 }
 
 // this needs to create a dummy file with empty fields if no conf is present

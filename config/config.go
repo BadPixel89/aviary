@@ -15,4 +15,5 @@ type ActiveDirectoryConfig struct {
 type MasterConfig struct {
 	JamfConfig JamfProConfig
 	ZenConfig  ZenDeskConfig
+	ADConfig   ActiveDirectoryConfig
 }

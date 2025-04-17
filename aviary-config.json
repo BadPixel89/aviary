@@ -1,0 +1,13 @@
+{
+    "JamfConfig": {
+        "JamfURL": ""
+    },
+    "ZenConfig": {
+        "ZenDeskURL": ""
+    },
+    "ADConfig": {
+        "LDAPURL": "",
+        "Domain": "",
+        "SearchRoot": ""
+    }
+}

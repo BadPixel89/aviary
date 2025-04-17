@@ -11,14 +11,23 @@ import (
 
 func main() {
 	//program always receives the folder it's contained in as the first argument?
+	//not under linux, passes ./aviary
 	if len(os.Args) == 1 {
 		welcome()
-
-		conf, err := config.LoadMasterConfig(os.Args[0])
-		if err != nil {
-			fmt.Println("error loading config\n" + err.Error())
+		configpath, wderr := os.Getwd()
+		if wderr != nil {
+			fmt.Println("[error] working dir not found")
+			fmt.Println(wderr.Error())
 		}
-		fmt.Println(conf.JamfUrl)
+
+		conferr := config.LoadMasterConfig(configpath)
+		if conferr != nil {
+			fmt.Println("error loading config\n" + conferr.Error())
+		}
+		saveerr := config.SaveConfig(configpath)
+		if saveerr != nil {
+			fmt.Println(saveerr.Error())
+		}
 
 		scanner := bufio.NewScanner(os.Stdin)
 		for scanner.Scan() {

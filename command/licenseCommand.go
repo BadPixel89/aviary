@@ -11,6 +11,7 @@ type LicenseCommand struct{}
 func (l LicenseCommand) Run(args []string) error {
 	//figure out how to embed and read a text file
 	//fill it with GPL and spuff it out
+	fmt.Println("print the GPL to console when I figure that stuff out")
 	return nil
 }
 func (l LicenseCommand) Help() {

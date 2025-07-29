@@ -7,7 +7,7 @@ import (
 
 // between dashes is basically the boilerplate to get the command to load and be usable
 // interface is not explicitly defined and inherited in Go, you fulfill it by implementing it
-// the func (e examplecommand) part of functions makes the functions act as if they were on
+// the func (e ExampleCommand) part of functions makes the functions act as if they were on
 // the object in c# terms cmd.Run() for example
 // -----
 // This code is run even though we don't explicitly instantiate, call, or use it
@@ -48,6 +48,8 @@ func (e ExampleCommand) Run(args []string) error {
 	}
 	return nil
 }
+
+// various functions we don't export
 func add(n1 int, n2 int) int {
 	return (n1 + n2)
 }
@@ -65,6 +67,8 @@ func divide(n1 int, n2 int) float32 {
 	}
 	return (n1f / n2f)
 }
+
+// every command should explain itself
 func (e ExampleCommand) Help() {
 	fmt.Println("description:")
 	fmt.Println("\tperform math operations on the numbers passed in to this command")
@@ -73,6 +77,8 @@ func (e ExampleCommand) Help() {
 	fmt.Println("operation flag can be one of:")
 	fmt.Println("\t-add -sub -mul -div")
 }
+
+// needed to store the command in the command dictionary
 func (e ExampleCommand) Name() string {
 	return "example"
 }

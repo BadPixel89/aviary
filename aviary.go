@@ -14,17 +14,18 @@ func main() {
 	//not under linux, passes ./aviary
 	if len(os.Args) == 1 {
 		welcome()
-		configpath, wderr := os.Getwd()
+		configpath, wderr := os.UserConfigDir()
 		if wderr != nil {
-			fmt.Println("[error] working dir not found")
+			fmt.Println("[error] config dir not found")
 			fmt.Println(wderr.Error())
 		}
 
 		conferr := config.LoadMasterConfig(configpath)
 		if conferr != nil {
-			fmt.Println("error loading config\n" + conferr.Error())
+			fmt.Println("[error] loading config\n" + conferr.Error())
 		}
-		saveerr := config.SaveConfig(configpath)
+		// just saving what we have to get blank file (hopefully)
+		saveerr := config.SaveConfig()
 		if saveerr != nil {
 			fmt.Println(saveerr.Error())
 		}

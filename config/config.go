@@ -12,8 +12,18 @@ type ActiveDirectoryConfig struct {
 	Domain     string
 	SearchRoot string
 }
+//	namefix structs start
+type NamefixConfig struct{
+	Replacements []Replacement `json:"Replacements"`
+}
+type Replacement struct {
+	Match       string `json:"Match"`
+	Replacement string `json:"Replacement"`
+}
+//	namefix structs end
 type MasterConfig struct {
-	JamfConfig JamfProConfig
-	ZenConfig  ZenDeskConfig
-	ADConfig   ActiveDirectoryConfig
+	JamfConf JamfProConfig
+	ZenConf ZenDeskConfig
+	ADConf   ActiveDirectoryConfig
+	NamefixConf NamefixConfig
 }

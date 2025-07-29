@@ -17,6 +17,9 @@ func RegisterCommand(cmd Command) error {
 	return nil
 }
 
+// looks up the command by name in the dictionary of commands, if found passes the
+// rest of the arguments to that command for processing, arguments are separated by spaces
+// arguments should account for receiving an empty array
 func Parse(args []string) error {
 	first := args[0]
 	cmd, ok := commands[first]
@@ -39,7 +42,7 @@ func Parse(args []string) error {
 
 func List() {
 	fmt.Println("available commands:")
-	for name, _ := range commands {
+	for name := range commands {
 		fmt.Println("\t" + name)
 	}
 	fmt.Println("type a command followed by help or -h to view more info about it")

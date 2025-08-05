@@ -10,25 +10,26 @@ import (
 )
 
 func main() {
+
+	welcome()
+	configpath, wderr := os.UserConfigDir()
+	if wderr != nil {
+		fmt.Println("[error] config dir not found")
+		fmt.Println(wderr.Error())
+	}
+
+	conferr := config.LoadMasterConfig(configpath)
+	if conferr != nil {
+		fmt.Println("[error] loading config\n" + conferr.Error())
+	}
+	// just saving what we have to get blank file (hopefully)
+	saveerr := config.SaveConfig()
+	if saveerr != nil {
+		fmt.Println(saveerr.Error())
+	}
 	//program always receives the folder it's contained in as the first argument?
 	//not under linux, passes ./aviary
 	if len(os.Args) == 1 {
-		welcome()
-		configpath, wderr := os.UserConfigDir()
-		if wderr != nil {
-			fmt.Println("[error] config dir not found")
-			fmt.Println(wderr.Error())
-		}
-
-		conferr := config.LoadMasterConfig(configpath)
-		if conferr != nil {
-			fmt.Println("[error] loading config\n" + conferr.Error())
-		}
-		// just saving what we have to get blank file (hopefully)
-		saveerr := config.SaveConfig()
-		if saveerr != nil {
-			fmt.Println(saveerr.Error())
-		}
 
 		scanner := bufio.NewScanner(os.Stdin)
 		for scanner.Scan() {
@@ -50,7 +51,7 @@ func main() {
 		}
 		panic("[fail] command loop escaped")
 	}
-
+	fmt.Println(os.Args)
 	err := command.Parse(os.Args[1:])
 
 	if err != nil {

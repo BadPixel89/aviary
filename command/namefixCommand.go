@@ -20,6 +20,7 @@ func (n NamefixCommand) Run(args []string) error {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
+	fmt.Println("namefix sees path as: " + directory)
 	files, err := os.ReadDir(directory)
 	if err != nil {
 		fmt.Println(err.Error())

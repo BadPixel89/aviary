@@ -107,6 +107,8 @@ func fixName(filename string, replacers []config.Replacement) string {
 func (n NamefixCommand) Help() {
 	fmt.Println("description:")
 	fmt.Println("\trenames files according to the config file, currently towards my prefered convention")
+	fmt.Println("\tnamefix operates on the current directory, move into a dir and run 'aviary namefix' to fix that directory")
+	fmt.Println("\tspecifying a path is on the task list - see todolist.txt")
 	fmt.Println("usage:")
 	fmt.Println("\tnamefix")
 	fmt.Println("no flags yet")

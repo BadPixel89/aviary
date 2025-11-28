@@ -8,13 +8,19 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"golang.org/x/exp/slices"
 )
 
 var _ = RegisterCommand(NamefixCommand{})
 
 type NamefixCommand struct{}
 
+var renameDirectory bool
+
 func (n NamefixCommand) Run(args []string) error {
+	renameDirectory = slices.Contains(args, "-d")
+
 	directory, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err.Error())
@@ -27,19 +33,29 @@ func (n NamefixCommand) Run(args []string) error {
 		os.Exit(1)
 	}
 	//not sure I like how many thing.things we have here
-	previewRename(files, config.Config.NamefixConf.Replacements)
+	if renameDirectory {
+		previewRenameDirs(files, config.Config.NamefixConf.Replacements)
+	} else {
+		previewRenameFiles(files, config.Config.NamefixConf.Replacements)
+	}
+
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("[input] proceed with changes?:(y/n)")
 	text, _ := reader.ReadString('\n')
 	//account for newline of windows and unix
 	if text == "y\n" || text == "y\r\n" {
-		actuallyRename(files, directory, config.Config.NamefixConf.Replacements)
-		os.Exit(0)
+		if renameDirectory {
+			actuallyRenameDir(files, directory, config.Config.NamefixConf.Replacements)
+		} else {
+			actuallyRenameFile(files, directory, config.Config.NamefixConf.Replacements)
+		}
+		fmt.Println("[done ] names updated")
+		return nil
 	}
-	fmt.Println("[exit ] no changes made")
+	fmt.Println("[done ] no changes made")
 	return nil
 }
-func previewRename(files []os.DirEntry, replacements []config.Replacement) {
+func previewRenameFiles(files []os.DirEntry, replacements []config.Replacement) {
 	fmt.Println("[info ] current file names")
 	for _, file := range files {
 		if file.Type().IsDir() {
@@ -61,17 +77,44 @@ func previewRename(files []os.DirEntry, replacements []config.Replacement) {
 
 	}
 }
+func previewRenameDirs(files []os.DirEntry, replacements []config.Replacement) {
+	fmt.Println("[info ] current directory names")
+	for _, file := range files {
+		if file.Type().IsDir() {
+			fmt.Println("\t" + file.Name())
+		}
+	}
+	fmt.Println("[info ] names after renaming * indicates change")
+	for _, file := range files {
+		if file.Type().IsDir() {
+			rename := fixName(file.Name(), replacements)
+			if rename == file.Name() {
+				fmt.Println("\t" + rename)
+			} else {
+				fmt.Println("*\t" + rename)
+			}
+		}
+	}
+}
 
 // needs the file names and path so the full filepath can be used in old and new names
-func actuallyRename(files []os.DirEntry, path string, replacements []config.Replacement) {
+func actuallyRenameFile(files []os.DirEntry, path string, replacements []config.Replacement) {
 	for _, file := range files {
 		if file.Type().IsDir() {
 			continue
 		}
-		//more allocations but way more readable than one line full of filepath joins in brackets
 		oldname := filepath.Join(path, file.Name())
 		newname := filepath.Join(path, fixName(file.Name(), replacements))
 		os.Rename(oldname, newname)
+	}
+}
+func actuallyRenameDir(files []os.DirEntry, path string, replacements []config.Replacement) {
+	for _, file := range files {
+		if file.Type().IsDir() {
+			oldname := filepath.Join(path, file.Name())
+			newname := filepath.Join(path, fixName(file.Name(), replacements))
+			os.Rename(oldname, newname)
+		}
 	}
 }
 func fixName(filename string, replacers []config.Replacement) string {

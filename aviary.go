@@ -11,7 +11,6 @@ import (
 
 func main() {
 
-	welcome()
 	configpath, wderr := os.UserConfigDir()
 	if wderr != nil {
 		fmt.Println("[error] config dir not found")
@@ -30,7 +29,7 @@ func main() {
 	//program always receives the folder it's contained in as the first argument?
 	//not under linux, passes ./aviary
 	if len(os.Args) == 1 {
-
+		welcome()
 		scanner := bufio.NewScanner(os.Stdin)
 		for scanner.Scan() {
 			if scanner.Text() == "q" {
@@ -51,7 +50,6 @@ func main() {
 		}
 		panic("[fail] command loop escaped")
 	}
-	fmt.Println(os.Args)
 	err := command.Parse(os.Args[1:])
 
 	if err != nil {

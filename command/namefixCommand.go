@@ -68,7 +68,7 @@ func previewRenameFiles(files []os.DirEntry, replacements []config.Replacement) 
 		if file.Type().IsDir() {
 			continue
 		}
-		rename := fixName(file.Name(), replacements)
+		rename := fixFileName(file.Name(), replacements)
 		if rename == file.Name() {
 			fmt.Println("\t" + rename)
 		} else {
@@ -87,7 +87,7 @@ func previewRenameDirs(files []os.DirEntry, replacements []config.Replacement) {
 	fmt.Println("[info ] names after renaming * indicates change")
 	for _, file := range files {
 		if file.Type().IsDir() {
-			rename := fixName(file.Name(), replacements)
+			rename := fixDirName(file.Name(), replacements)
 			if rename == file.Name() {
 				fmt.Println("\t" + rename)
 			} else {
@@ -104,7 +104,7 @@ func actuallyRenameFile(files []os.DirEntry, path string, replacements []config.
 			continue
 		}
 		oldname := filepath.Join(path, file.Name())
-		newname := filepath.Join(path, fixName(file.Name(), replacements))
+		newname := filepath.Join(path, fixFileName(file.Name(), replacements))
 		os.Rename(oldname, newname)
 	}
 }
@@ -112,12 +112,12 @@ func actuallyRenameDir(files []os.DirEntry, path string, replacements []config.R
 	for _, file := range files {
 		if file.Type().IsDir() {
 			oldname := filepath.Join(path, file.Name())
-			newname := filepath.Join(path, fixName(file.Name(), replacements))
+			newname := filepath.Join(path, fixDirName(file.Name(), replacements))
 			os.Rename(oldname, newname)
 		}
 	}
 }
-func fixName(filename string, replacers []config.Replacement) string {
+func fixFileName(filename string, replacers []config.Replacement) string {
 	filename = strings.ToLower(filename)
 	filenamesplit := strings.Split(filename, ".")
 	ext := ""
@@ -145,6 +145,30 @@ func fixName(filename string, replacers []config.Replacement) string {
 	//clean up in case last character is a -, -.mp4 looks weird
 	filename = strings.Replace(filename, "-.", ".", -1)
 	return filename
+}
+func fixDirName(dirname string, replacers []config.Replacement) string {
+	dirname = strings.ToLower(dirname)
+
+	for _, replace := range replacers {
+		dirname = strings.Replace(dirname, replace.Match, replace.Replacement, -1)
+	}
+
+	//	keep regex here until we implement into config
+	//	matches sequencs of 2 or more '.' '-' '_' or spaces
+	// 	these patterns happen if many replacements match, "showname.1080p.webrip.rarbg.x264" becomes "showname...."
+	removechars := regexp.MustCompile(`([.\s-_]){2,}`)
+	remove := removechars.FindAllString(dirname, -1)
+
+	for _, substr := range remove {
+		//match one to stop replace interfering with itself
+		//each substring should occurr once if regex matched it
+		dirname = strings.Replace(dirname, substr, "-", 1)
+	}
+	lastchar := dirname[len(dirname)-1]
+	if lastchar == '.' || lastchar == '-' {
+		dirname = dirname[:len(dirname)-1]
+	}
+	return dirname
 }
 
 func (n NamefixCommand) Help() {

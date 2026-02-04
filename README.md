@@ -1,3 +1,3 @@
 Command line framework for making basic little tools easily
 
-port of a c# utility I made at work
+port of a c# utility I made at work - most commands not ported yet

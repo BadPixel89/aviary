@@ -1,0 +1,21 @@
+/// paste all this in, 
+/// change "NameCommand" to match command
+/// change "c" to first letter of command name
+
+package command
+
+var _ = RegisterCommand(NameCommand{})
+
+type NameCommand struct{}
+
+func (c NameCommand) Run(args []string) error {
+	return nil
+}
+
+func (c NameCommand) Help() {
+
+}
+
+func (c NameCommand) Name() string {
+	return "name"
+}

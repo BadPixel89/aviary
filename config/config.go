@@ -1,6 +1,6 @@
 package config
 
-//	namefix structs start
+// namefix structs start
 type NamefixConfig struct {
 	Replacements []Replacement `json:"Replacements"`
 }
@@ -10,6 +10,7 @@ type Replacement struct {
 }
 
 //	namefix structs end
+
 type MasterConfig struct {
 	NamefixConf NamefixConfig
 }

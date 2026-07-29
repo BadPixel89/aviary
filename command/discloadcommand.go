@@ -64,7 +64,16 @@ func CalculateLoad(weight float64, props float64) float64 {
 }
 
 func (c DiscLoadCommand) Help() {
-
+	fmt.Println("description:")
+	fmt.Println("\tcalculates disc loading of a for a drone with a given all up weight in grams and prop size in inches")
+	fmt.Println("usage:")
+	fmt.Println("\tdiscload [args] ")
+	fmt.Println("\t[-p | -props] (float) \t: prop size in inches")
+	fmt.Println("\t[-w | -weight] (float) \t: weight in grams")
+	fmt.Println("examples")
+	fmt.Println("\tdiscload -p 3 -w 230")
+	fmt.Println("\tdiscload -p 3.5 -w 300")
+	fmt.Println("\tdiscload -prop 4.9 -weight 605.5")
 }
 
 func (c DiscLoadCommand) Name() string {

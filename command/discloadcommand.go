@@ -14,7 +14,12 @@ type DiscLoadCommand struct{}
 func (c DiscLoadCommand) Run(args []string) error {
 	var weight float64 = 0
 	var propsize float64 = 0
+
 	for index, arg := range args {
+		if args[0] == "-i" || args[0] == "-ideal" {
+			IdealNumbers()
+			return nil
+		}
 		if strings.Contains(arg, "-prop") || strings.Contains(arg, "-p") {
 			p, err := strconv.ParseFloat(args[index+1], 64)
 			if err != nil {
@@ -63,13 +68,29 @@ func CalculateLoad(weight float64, props float64) float64 {
 	*/
 }
 
+func IdealNumbers() {
+	fmt.Println("my suggested loads for given prop sizes, results in 12 - 12.5 disc load:")
+	fmt.Println("this is all based on how my 5 inch feels with 4.9 sbang props at 605.5 g ")
+	fmt.Println("my upper threshold is 12.5 disc load, all numbers are the highest round gram that results in under 12.5")
+	fmt.Println("3.0 inch | low : 219 : high 228 g")
+	fmt.Println("    load | 12.005612 : 12.498993 ")
+	fmt.Println("3.5 inch | low : 298 : high 310 g")
+	fmt.Println("    load | 12.002256 : 12.485568 ")
+	fmt.Println("4.9 inch | low : 584 : high 608 g")
+	fmt.Println("    load | 12.000612 : 12.493787 ")
+	fmt.Println("5.0 inch | low : 609 : high 633 g")
+	fmt.Println("    load | 12.018769 : 12.492415 ")
+}
+
 func (c DiscLoadCommand) Help() {
 	fmt.Println("description:")
 	fmt.Println("\tcalculates disc loading of a for a drone with a given all up weight in grams and prop size in inches")
+	fmt.Println("\tI like a disc load of 12-12.5 for freestyle")
 	fmt.Println("usage:")
 	fmt.Println("\tdiscload [args] ")
-	fmt.Println("\t[-p | -props] (float) \t: prop size in inches")
-	fmt.Println("\t[-w | -weight] (float) \t: weight in grams")
+	fmt.Println("\t[-p | -props]\t(float) \t: prop size in inches")
+	fmt.Println("\t[-w | -weight]\t(float) \t: weight in grams")
+	fmt.Println("\t[-i | -ideal]\t(flag)  \t: show my ideal ranges")
 	fmt.Println("examples")
 	fmt.Println("\tdiscload -p 3 -w 230")
 	fmt.Println("\tdiscload -p 3.5 -w 300")

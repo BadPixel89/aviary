@@ -52,20 +52,6 @@ func CalculateLoad(weight float64, props float64) float64 {
 	result = weightkg / ((math.Pow(propsm/2, 2) * math.Pi) * 4)
 
 	return result
-	/*
-		assume default vars are in inches and grams
-		do we allow other units? if so how
-		can we set default units in conf later?
-
-		calculate disk load here
-
-			weight - needs to be in KG
-			diameter - needs to be in M (LUT for common prop sizes to M)
-
-			load = weight / (((diameter / pi) * (diameter / pi) )x4)
-			OR
-			load = weight / (((diameter / pi) ^2 ) x4)
-	*/
 }
 
 func IdealNumbers() {

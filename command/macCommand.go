@@ -1,5 +1,8 @@
 package command
 
+// use this API to get json info about a MAC
+// https://api.maclookup.app/v2/macs/<MAC ADDRESS HERE>
+
 var _ = RegisterCommand(MacCommand{})
 
 type MacCommand struct{}

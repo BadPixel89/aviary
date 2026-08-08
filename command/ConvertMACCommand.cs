@@ -4,6 +4,10 @@
 //  specify clipboard behaviour - default don't use clipboard
   //  can have the behavoiur in the conf
 
+
+// use this API to get json info about a MAC
+// https://api.maclookup.app/v2/macs/<MAC ADDRESS HERE>
+
 public string Name { get; set; } = "mac";
 private enum MACTYPE { NONE = 0, COLON, DASH, DOT, ERROR, ALL }
 

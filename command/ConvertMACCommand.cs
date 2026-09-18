@@ -105,10 +105,12 @@ private MACTYPE DetectFormat(string inputMac)
 }
 private bool ValidateRawMac(string inputMac)
 {
+    // if length is more than 12 it's not raw
     if (inputMac.Length != 12)
     {
         return false;
     }
+    // if it's not a hex number it's not valid
     long output;
     if (!long.TryParse(inputMac, System.Globalization.NumberStyles.HexNumber, null, out output))
     {
